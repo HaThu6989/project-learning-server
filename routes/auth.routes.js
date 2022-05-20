@@ -11,6 +11,7 @@ const saltRounds = 10;
 // Create Account
 router.post("/signup", (req, res, next) => {
   const { email, password } = req.body;
+  console.log("auth req.body", req.body);
 
   // Check if email or password or name are provided as empty string
   if (email === "" || password === "") {

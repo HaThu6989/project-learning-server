@@ -3,6 +3,7 @@ const router = require("express").Router();
 const { default: mongoose } = require("mongoose");
 const Topic = require("../models/Topic.model");
 const Lesson = require("../models/Lesson.model");
+const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
@@ -14,9 +15,10 @@ router.post("/topics", isAuthenticated, (req, res, next) => {
     title,
     description,
     lessons: [],
-    // user: req.user._id,
+    user: req.payload._id,
   };
 
+  console.log("newTopic............", newTopic);
   Topic.create(newTopic)
     .then((response) => res.status(201).json(response))
     .catch((err) => {
@@ -29,11 +31,11 @@ router.post("/topics", isAuthenticated, (req, res, next) => {
 });
 
 // Get list of topics
-router.get("/topics", (req, res, next) => {
-  Topic.find()
-    .populate("lessons")
-    .then((response) => {
-      res.json(response);
+router.get("/topics", isAuthenticated, (req, res, next) => {
+  Topic.findById({ user: req.payload._id })
+    .polpulate("lessons")
+    .then((user) => {
+      res.json(user);
     })
     .catch((err) => {
       console.log("error getting list of topics", err);
