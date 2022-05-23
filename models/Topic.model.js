@@ -5,6 +5,7 @@ const topicSchema = new Schema({
   title: {
     type: String,
     required: true,
+    maxlength: 20,
   },
   description: String,
   lessons: [

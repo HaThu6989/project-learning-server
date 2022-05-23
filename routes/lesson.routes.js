@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const Topic = require("../models/Topic.model");
 const Lesson = require("../models/Lesson.model");
 
+const { isAuthenticated } = require("../middleware/jwt.middleware");
+
 //  Create a new lesson
 router.post("/lessons", (req, res, next) => {
   const { title, description, url, status, topicId } = req.body;
@@ -12,7 +14,7 @@ router.post("/lessons", (req, res, next) => {
     title,
     description,
     url: url.startsWith("https://") ? url : `https://${url}`,
-    status: status || "TO LEARN",
+    status: status,
     topic: topicId,
   };
 

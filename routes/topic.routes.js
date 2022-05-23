@@ -32,10 +32,11 @@ router.post("/topics", isAuthenticated, (req, res, next) => {
 
 // Get list of topics
 router.get("/topics", isAuthenticated, (req, res, next) => {
-  Topic.findById({ user: req.payload._id })
-    .polpulate("lessons")
-    .then((user) => {
-      res.json(user);
+  Topic.find({ user: req.payload._id })
+    .populate("user")
+    .populate("lessons")
+    .then((response) => {
+      res.json(response);
     })
     .catch((err) => {
       console.log("error getting list of topics", err);
