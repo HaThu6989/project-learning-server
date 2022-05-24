@@ -33,7 +33,7 @@ router.post("/lessons", (req, res, next) => {
 
 // Get list of lessons
 router.get("/lessons", (req, res, next) => {
-  Topic.find()
+  Lesson.find()
     .then((response) => {
       res.json(response);
     })
@@ -55,7 +55,7 @@ router.get("/lessons/:lessonId", (req, res, next) => {
     return;
   }
 
-  Lesson.find({ _id: lessonId })
+  Lesson.findOne({ _id: lessonId })
     .then((lesson) => res.json(lesson))
     .catch((err) => {
       console.log("error getting details of a lesson", err);
