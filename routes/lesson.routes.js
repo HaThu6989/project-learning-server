@@ -14,7 +14,7 @@ router.post("/lessons", (req, res, next) => {
     title,
     description,
     url: url.startsWith("https://") ? url : `https://${url}`,
-    status: status,
+    status: status || "TO LEARN",
     topic: topicId,
   };
 
