@@ -22,7 +22,7 @@ To run in your computer, follow these steps:
   - TOKEN_SECRET: used to sign auth tokens (example, TOKEN_SECRET=ilovemomdad)
 - Run the application: npm run dev or npm start
 
-## Learner DashBorad Demo
+## Demo
 
 Follow the link to view the website demo:
 https://project-learning.netlify.app/
