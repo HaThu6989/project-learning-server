@@ -1,12 +1,10 @@
-# LEARNER DASHBOARD (Platform to keep track of what you are learning)
+# Learner Dashboard (Platform to keep track of what you are learning)
 
-## What is LEARNER DASHBOARD
+## What is Learner Dashboard ?
 
-- LEARNER DASHBOARD is a centralized location where you can quickly see where you are in a course, what action items you may still have, and what courses you are currently enrolled in.
+- Learner Dashboard is a website where you can quickly see where you are in a course, what action items you may still have, and what courses you are currently enrolled in.
 - Upon login, you will automatically be directed to your Learner Dashboard.
 - Learners will only see the tabs and sections as applicable to them and their institution.
-
-<br>
 
 ## REST API
 
@@ -23,8 +21,6 @@ To run in your computer, follow these steps:
   - ORIGIN, with the location of your frontend app (example, ORIGIN=https://myprojectname.netlify.com)
   - TOKEN_SECRET: used to sign auth tokens (example, TOKEN_SECRET=ilovemomdad)
 - Run the application: npm run dev or npm start
-
-<br>
 
 ## Learner DashBorad Demo
 
