@@ -8,7 +8,7 @@ const lessonSchema = new Schema({
   },
   description: {
     type: String,
-    maxlength: 2000,
+    required: true,
   },
   url: {
     type: String,
@@ -18,13 +18,6 @@ const lessonSchema = new Schema({
     enum: ["TO LEARN", "LEARNING", "LEARNED"],
     default: "TO LEARN",
   },
-  // createdAt: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
-  // reachDate: {
-  //   type: Date,
-  // },
   topic: {
     type: Schema.Types.ObjectId,
     ref: "Topic",

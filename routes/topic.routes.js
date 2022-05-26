@@ -6,6 +6,7 @@ const Lesson = require("../models/Lesson.model");
 const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
+const isOwner = require("../middleware/isOwner");
 
 // Create new topic
 router.post("/topics", isAuthenticated, (req, res, next) => {
@@ -48,7 +49,7 @@ router.get("/topics", isAuthenticated, (req, res, next) => {
 });
 
 //  Get details of a specific topic by id
-router.get("/topics/:topicId", isAuthenticated, (req, res, next) => {
+router.get("/topics/:topicId", isAuthenticated, isOwner, (req, res, next) => {
   const { topicId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(topicId)) {

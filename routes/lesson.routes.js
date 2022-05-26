@@ -7,32 +7,39 @@ const Lesson = require("../models/Lesson.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //  Create a new lesson
-router.post("/lessons", (req, res, next) => {
-  const { title, description, url, status, topicId } = req.body;
+router.post("/lessons", isAuthenticated, (req, res, next) => {
+  const { title, description, url, status, topic } = req.body;
+  console.log("lesson created", req.body);
+  let urlAddress;
+
+  if (url?.startsWith("https://")) {
+    urlAddress = url;
+  } else {
+    urlAddress = `https://${url}`;
+  }
 
   const newLesson = {
     title,
     description,
-    url: url.startsWith("https://") ? url : `https://${url}`,
+    url: urlAddress,
     status: status || "TO LEARN",
-    topic: topicId,
+    topic,
   };
 
   Lesson.create(newLesson)
     .then((lessonFromDB) => {
-      console.log(lessonFromDB._id);
-      return Topic.findByIdAndUpdate(topicId, {
+      return Topic.findByIdAndUpdate(lessonFromDB.topic, {
         $push: { lessons: lessonFromDB._id },
       });
     })
     .then((response) => {
       res.status(201).json(response);
     })
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(500).json(err));
 });
 
 // Get list of lessons
-router.get("/lessons", (req, res, next) => {
+router.get("/lessons", isAuthenticated, (req, res, next) => {
   Lesson.find()
     .then((response) => {
       res.json(response);
@@ -47,7 +54,7 @@ router.get("/lessons", (req, res, next) => {
 });
 
 //  Get details of a specific lesson by id
-router.get("/lessons/:lessonId", (req, res, next) => {
+router.get("/lessons/:lessonId", isAuthenticated, (req, res, next) => {
   const { lessonId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(lessonId)) {
@@ -67,7 +74,7 @@ router.get("/lessons/:lessonId", (req, res, next) => {
 });
 
 // Updates a specific lesson by id
-router.put("/lessons/:lessonId", (req, res, next) => {
+router.put("/lessons/:lessonId", isAuthenticated, (req, res, next) => {
   const { lessonId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(lessonId)) {
@@ -87,7 +94,7 @@ router.put("/lessons/:lessonId", (req, res, next) => {
 });
 
 // Delete a specific lesson by id
-router.delete("/lessons/:lessonId", (req, res, next) => {
+router.delete("/lessons/:lessonId", isAuthenticated, (req, res, next) => {
   const { lessonId } = req.params;
   console.log(req.params);
   if (!mongoose.Types.ObjectId.isValid(lessonId)) {

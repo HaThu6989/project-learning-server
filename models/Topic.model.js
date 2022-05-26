@@ -5,9 +5,11 @@ const topicSchema = new Schema({
   title: {
     type: String,
     required: true,
-    maxlength: 20,
   },
-  description: String,
+  description: {
+    type: String,
+    required: true,
+  },
   lessons: [
     {
       type: Schema.Types.ObjectId,

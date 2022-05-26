@@ -4,7 +4,7 @@
 
 - Learner Dashboard is a website where you can quickly see where you are in a course, what action items you may still have, and what courses you are currently enrolled in.
 - Upon login, you will automatically be directed to your Learner Dashboard.
-- Learners will only see the tabs and sections as applicable to them and their institution.
+- Learners will only see the tabs and sections as applicable to them.
 
 ## REST API
 
