@@ -48,7 +48,7 @@ router.get("/topics", isAuthenticated, (req, res, next) => {
 });
 
 //  Get details of a specific topic by id
-router.get("/topics/:topicId", (req, res, next) => {
+router.get("/topics/:topicId", isAuthenticated, (req, res, next) => {
   const { topicId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(topicId)) {
@@ -69,7 +69,7 @@ router.get("/topics/:topicId", (req, res, next) => {
 });
 
 // Updates a specific topic by id
-router.put("/topics/:topicId", (req, res, next) => {
+router.put("/topics/:topicId", isAuthenticated, (req, res, next) => {
   const { topicId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(topicId)) {
@@ -90,7 +90,7 @@ router.put("/topics/:topicId", (req, res, next) => {
 });
 
 // Delete a specific topic by id
-router.delete("/topics/:topicId", (req, res, next) => {
+router.delete("/topics/:topicId", isAuthenticated, (req, res, next) => {
   const { topicId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(topicId)) {
