@@ -6,7 +6,7 @@ const Lesson = require("../models/Lesson.model");
 const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
-const isOwner = require("../middleware/isOwner");
+const isOwnerTopic = require("../middleware/isOwnerTopic");
 
 // Create new topic
 router.post("/topics", isAuthenticated, (req, res, next) => {
@@ -49,25 +49,30 @@ router.get("/topics", isAuthenticated, (req, res, next) => {
 });
 
 //  Get details of a specific topic by id
-router.get("/topics/:topicId", isAuthenticated, isOwner, (req, res, next) => {
-  const { topicId } = req.params;
+router.get(
+  "/topics/:topicId",
+  isAuthenticated,
+  isOwnerTopic,
+  (req, res, next) => {
+    const { topicId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(topicId)) {
-    res.status(400).json({ message: "Specified id is not valid" });
-    return;
-  }
+    if (!mongoose.Types.ObjectId.isValid(topicId)) {
+      res.status(400).json({ message: "Specified id is not valid" });
+      return;
+    }
 
-  Topic.findById(topicId)
-    .populate("lessons")
-    .then((topic) => res.json(topic))
-    .catch((err) => {
-      console.log("error getting details of a topic", err);
-      res.status(500).json({
-        message: "error getting details of a topic",
-        error: err,
+    Topic.findById(topicId)
+      .populate("lessons")
+      .then((topic) => res.json(topic))
+      .catch((err) => {
+        console.log("error getting details of a topic", err);
+        res.status(500).json({
+          message: "error getting details of a topic",
+          error: err,
+        });
       });
-    });
-});
+  }
+);
 
 // Updates a specific topic by id
 router.put("/topics/:topicId", isAuthenticated, (req, res, next) => {

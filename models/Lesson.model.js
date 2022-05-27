@@ -22,6 +22,10 @@ const lessonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Topic",
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = model("Lesson", lessonSchema);

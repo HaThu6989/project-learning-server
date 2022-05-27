@@ -5,7 +5,7 @@ const Topic = require("../models/Topic.model");
 const Lesson = require("../models/Lesson.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
-
+const isOwnerLesson = require("../middleware/isOwnerLesson");
 //  Create a new lesson
 router.post("/lessons", isAuthenticated, (req, res, next) => {
   const { title, description, url, status, topic } = req.body;
@@ -24,6 +24,7 @@ router.post("/lessons", isAuthenticated, (req, res, next) => {
     url: urlAddress,
     status: status || "TO LEARN",
     topic,
+    user: req.payload._id,
   };
 
   Lesson.create(newLesson)
@@ -54,44 +55,54 @@ router.get("/lessons", isAuthenticated, (req, res, next) => {
 });
 
 //  Get details of a specific lesson by id
-router.get("/lessons/:lessonId", isAuthenticated, (req, res, next) => {
-  const { lessonId } = req.params;
+router.get(
+  "/lessons/:lessonId",
+  isAuthenticated,
+  isOwnerLesson,
+  (req, res, next) => {
+    const { lessonId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(lessonId)) {
-    res.status(400).json({ message: "Specified id is not valid" });
-    return;
-  }
+    if (!mongoose.Types.ObjectId.isValid(lessonId)) {
+      res.status(400).json({ message: "Specified id is not valid" });
+      return;
+    }
 
-  Lesson.findOne({ _id: lessonId })
-    .then((lesson) => res.json(lesson))
-    .catch((err) => {
-      console.log("error getting details of a lesson", err);
-      res.status(500).json({
-        message: "error getting details of a lesson",
-        error: err,
+    Lesson.findOne({ _id: lessonId })
+      .then((lesson) => res.json(lesson))
+      .catch((err) => {
+        console.log("error getting details of a lesson", err);
+        res.status(500).json({
+          message: "error getting details of a lesson",
+          error: err,
+        });
       });
-    });
-});
+  }
+);
 
 // Updates a specific lesson by id
-router.put("/lessons/:lessonId", isAuthenticated, (req, res, next) => {
-  const { lessonId } = req.params;
+router.put(
+  "/lessons/:lessonId",
+  isAuthenticated,
+  isOwnerLesson,
+  (req, res, next) => {
+    const { lessonId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(lessonId)) {
-    res.status(400).json({ message: "Specified id is not valid" });
-    return;
-  }
+    if (!mongoose.Types.ObjectId.isValid(lessonId)) {
+      res.status(400).json({ message: "Specified id is not valid" });
+      return;
+    }
 
-  Lesson.findByIdAndUpdate({ _id: lessonId }, req.body, { new: true })
-    .then((updatedLesson) => res.json(updatedLesson))
-    .catch((err) => {
-      console.log("error updating lesson", err);
-      res.status(500).json({
-        message: "error updating lesson",
-        error: err,
+    Lesson.findByIdAndUpdate({ _id: lessonId }, req.body, { new: true })
+      .then((updatedLesson) => res.json(updatedLesson))
+      .catch((err) => {
+        console.log("error updating lesson", err);
+        res.status(500).json({
+          message: "error updating lesson",
+          error: err,
+        });
       });
-    });
-});
+  }
+);
 
 // Delete a specific lesson by id
 router.delete("/lessons/:lessonId", isAuthenticated, (req, res, next) => {
